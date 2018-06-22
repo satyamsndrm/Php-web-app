@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Epotask2</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
+	</script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js">
+	</script>
+	<!-- -->
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body ng-app="myapp" ng-controller="MyController">
+	<div class="header">
+		<div class="headerTitle" style="text-align: left;">Exam Preparation Online</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="well row">
+					<div class="clickBtn"><a class="btn btn-link" ng-click="applyFilter()">Apply Filter</a></div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label >Organisation:</label>
+							<select class="form-control selectBox" ng-model="Org">
+								<option value="">NONE</option>
+								<option ng-repeat="org in Organisations" value="{{org}}">{{org}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Engineering Stream:</label>
+							<select class="form-control selectBox" ng-model="Es">
+								<option value="">Select</option>
+								<option ng-repeat="x in EngStream" value="{{x}}">{{x}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Application Mode</label>
+							<select class="form-control selectBox" ng-model="Am">
+								<option value="">Select</option>
+								<option ng-repeat="x in ApplMod" value="{{x}}">{{x}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="well row">
+					<a class="btn btn-link checkBoxbtn" ng-click="clearAll()">Clear all/</a>
+					<a class="btn btn-link checkBoxbtn" ng-click="selectAll()">Select all</a>
+					<div class="col-sm-12">
+						<div class="checkbox">
+						    <label>
+								<input type="checkbox" ng-model="selPr"> Selection Procedure
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+								<input type="checkbox" ng-model="techView"> Technical Interview
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+								<input type="checkbox" ng-model="anaQue"> Analytical Questions
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+								<input type="checkbox" ng-model="hrQue"> HR Questions
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+								<input type="checkbox" ng-model="sug"> Suggestions 
+						    </label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<div class="row">
+					<div class="col-sm-1 hidden-xs">
+						<div class="hline"></div>
+					</div>
+					<div class="col-sm-11">
+						<div class="title">INTERVIEW EXPERIENCES :: {{OrgApplied}} </div>
+						<div class="contentBox" ng-repeat="data in filteredData | filter:{Organisation:OrgApplied, AppMode:AmApplied}">
+							<div class="contentRow">
+								<div class="contentLeft">
+									Job Location :
+								</div>
+								<div class="contentRight">
+									{{data.JobLoc}}
+								</div>
+							</div>
+							<div class="contentRow">
+								<div class="contentLeft">
+									Organisation :
+								</div>
+								<div class="contentRight">
+									{{data.Organisation}}
+								</div>
+							</div>
+							<div class="contentRow">
+								<div class="contentLeft">
+									Application Mode :
+								</div>
+								<div class="contentRight">
+									{{data.AppMode}}
+								</div>
+							</div>
+							<div class="contentRow" ng-show="selPr">
+								<div class="contentLeft">
+									Selection Procedure :
+								</div>
+								<div class="contentRight">
+									{{data.SelPro}}
+								</div>
+							</div>
+							<div class="contentRow" ng-show="techView">
+								<div class="contentLeft">
+									Technical Interview :
+								</div>
+								<div class="contentRight">
+									{{data.TechInterview}}
+								</div>
+							</div>
+							<div class="contentRow" ng-show="anaQue">
+								<div class="contentLeft">
+									Analytical Questions :
+								</div>
+								<div class="contentRight">
+									{{data.AnaQue}}
+								</div>
+							</div>
+							<div class="contentRow" ng-show="hrQue">
+								<div class="contentLeft">
+									HR Questions :
+								</div>
+								<div class="contentRight">
+									{{data.HrQue}}
+								</div>
+							</div>
+							<div class="contentRow" ng-show="sug">
+								<div class="contentLeft">
+									Suggestions :
+								</div>
+								<div class="contentRight">
+									{{data.Suggestions}}
+								</div>
+							</div>
+							<div class="contentRow">
+								<div class="contentLeft">
+									Shared By :
+								</div>
+								<div class="contentRight">
+									{{data.SharedBy}}
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+    <script>
+
+         var app= angular.module("myapp", [])
+         
+         app.controller("MyController", function($scope) {
+         	$scope.Es="";
+         	$scope.Am=""
+         	$scope.Org="ARW";
+         	$scope.OrgApplied=$scope.Org;
+         	$scope.Organisations=['ARW','Organisation2','Organisation3'];
+         	//$scope.EngStream=['ARW','Mylove'];
+         	$scope.ApplMod=['On Campus','Off Campus'];
+         	$scope.appData=[
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'ARW',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Delhi',
+	         		Organisation:'ARW',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'ARW',
+	         		AppMode:'Off Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Delhi',
+	         		Organisation:'ARW',
+	         		AppMode:'Off Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'Organisation2',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Delhi',
+	         		Organisation:'Organisation2',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'Organisation2',
+	         		AppMode:'Off Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Delhi',
+	         		Organisation:'Organisation2',
+	         		AppMode:'Off Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'Organisation3',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         	{
+	         		JobLoc:'Chennai',
+	         		Organisation:'Organisation3',
+	         		AppMode:'On Campus',
+	         		SelPro:'Looking for candidates',
+	         		TechInterview:'Some technical Interview Questions.',
+	         		AnaQue:'Some Analytical Questions.',
+	         		HrQue:'Question and strength.',
+	         		Suggestions:'Have a very clear communication skill.',
+	         		SharedBy:'Radha Nair'
+	         	},
+	         ];
+
+	        $scope.filteredData=$scope.appData;
+	        $scope.applyFilter = function() {
+	        	$scope.OrgApplied=$scope.Org;
+	        	$scope.AmApplied = $scope.Am;
+	        }
+
+            $scope.selectAll = function(){
+            	$scope.selPr=true;
+            	$scope.techView=true;
+            	$scope.anaQue=true;
+            	$scope.hrQue=true;
+            	$scope.sug=true;
+            }
+            $scope.clearAll = function(){
+            	$scope.selPr=false;
+            	$scope.techView=false;
+            	$scope.anaQue=false;
+            	$scope.hrQue=false;
+            	$scope.sug=false;
+            }
+         });
+      </script>
+</body>
+</html>

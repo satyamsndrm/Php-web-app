@@ -1,0 +1,6 @@
+{"web":{
+	"client_id":"7YOUR_CLIENT_ID_FROM_GOOGLE",
+	"project_id":"YOUR_PROJECT_ID",
+	"redirect_uris":"REDIRECT_URL",
+	"client_secret":"YOUR_CLIENT_SECRET_FROM_GOOGLE",
+	"javascript_origins":["http://localhost"]
