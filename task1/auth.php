@@ -10,7 +10,7 @@ $redirectURL = 'http://localhost/epotasks/task1/task1form.php';
 //Call Google API
 $client = new Google_Client();
 $client->setAuthConfig('../credit.json');
-$client->setDeveloperKey("AIzaSyDfZ44Vu9rkAuTf7h5rxffdO_Qwwyw9uSI");
+$client->setDeveloperKey("DEVELOPER_KEY_FROM_GOOGLE");
 $client->setRedirectUri($redirectURL);
 $client->setScopes('email');
 $guzzleClient = new \GuzzleHttp\Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
